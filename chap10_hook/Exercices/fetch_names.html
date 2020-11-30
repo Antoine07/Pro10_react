@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .heading {
+            color: purple;
+        }
+
+        .principal {
+            background-color: beige;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const App = props => {
+            
+            const [loading, setLoading] = React.useState(false);
+            const [users, setUsers] = React.useState([]);
+
+            React.useEffect(() => {
+
+                const asyncFetch = async url => {
+                    setLoading(true);
+                    const response = await fetch(url);
+                    const users = await response.json();
+                    // simule un attente d'une seconde
+                    const waiting = await new Promise( res => setTimeout(() => res(true), 1000) );
+
+                    setLoading(false);
+                    setUsers( users );
+                }
+
+                asyncFetch('https://jsonplaceholder.typicode.com/users');
+
+            }, []);
+
+            if(loading) return <p>Data loading ...</p>;
+
+            return(
+                <Search users={users} />
+            )
+        };
+
+        // {users} pour récupérer plus facilement la clé users dans les props (props.users) 
+        const Search = ({users}) => {
+            const [names, setNames] = React.useState([]);
+            const [user, setUser] = React.useState('');
+            const [message, setMessage] = React.useState('');
+
+
+            const handleChange = e =>{
+                const { value : user } = e.target;
+                setUser(user);
+                setNames([]);
+                setMessage('');
+            }
+
+            const handleSubmit = e =>{
+                e.preventDefault();
+
+                if( user.trim() === '' ){
+                    // message d'erreur
+                    setMessage('Attention votre champ est vide');
+
+                    return;
+                }
+
+                const results = users.filter( u => u.name.includes(user) ).map( user => user.name );
+                setNames(results);
+                setUser('');
+                setMessage('');
+            }
+          
+            return(
+                <React.Fragment>
+                    { message && <p>{message}</p>}
+                    <h1>Search users</h1>
+                   <form onSubmit={handleSubmit}>
+                    <div>
+                        <input type="text" name="user" value={user} onChange={handleChange}/>
+                    </div>
+                    <div>
+                        <button>Search</button>
+                    </div>
+                   </form>
+                   { names.length > 0 && (
+                       <Users names={names} />
+                   ) }
+                </React.Fragment>
+            )
+        }
+
+        const Users = ({names}) => (
+            <ul>
+                {names.map( (name, i) => <li key={i}>{name}</li>)}
+            </ul>
+        )
+        
+        ReactDOM.render(
+            <App/>,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+
+</html>
