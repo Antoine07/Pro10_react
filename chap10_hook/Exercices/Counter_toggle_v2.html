@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .heading {
+            color: purple;
+        }
+
+        .principal {
+            background-color: beige;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+            
+        const App = props => {
+
+            const [display, setDisplay] = React.useState(false);
+         
+            return (
+                <React.Fragment>
+                    <p><button onClick={() => setDisplay(!display)}>Toggle Counter</button></p>
+                    { display && <Counter />}
+                </React.Fragment>
+            )
+        };
+
+        const Counter = () => {
+            const [count, setCount] = React.useState(0);
+            const [active, setActive] = React.useState(false);
+            // unique ref dans le composant
+            const refInterval = React.useRef(null);
+
+            // gestion des effets de bords sur les state
+            React.useEffect(() => {
+                if(active === true){
+                    refInterval.current = setInterval(() => {
+                        setCount( count => count + 1);
+                       
+                    }, 1000);
+                }else{
+                    clearInterval(refInterval.current);
+                }
+
+                return () => {
+                    clearInterval(refInterval.current);
+                }
+
+            }, [active]); // attention le useEffect n'est ré-exécuté que si le state active change de valeur
+
+            const start = () => {
+                setActive(true);
+            }
+
+            const stop = () => {
+                setActive(false);
+            }
+
+            const reset = () => {
+                setCount(0);
+                setActive(false);
+            }
+
+            return(
+                <React.Fragment>
+                    <p>Counter : { count } </p>
+                    <p><button onClick={start} disabled={active} >Start</button></p>
+                    <p><button onClick={stop} disabled={!active}>Stop</button></p>
+                    {count > 0 && <p><button onClick={reset} >Reset</button></p>}
+                </React.Fragment>
+            )
+        }
+        
+        ReactDOM.render(
+            <App/>,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+
+</html>
