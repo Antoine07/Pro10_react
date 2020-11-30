@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .heading {
+            color: purple;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        class App extends React.Component {
+
+            render() {
+                
+                return (
+                    <Form />
+                )
+            }
+        }
+
+        class Form extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = { 
+                    value: '', 
+                    users : [],
+                    message : '',
+                    order : true // true pour croissant
+                };
+
+                this.handleChange = this.handleChange.bind(this);
+                this.handleSubmit = this.handleSubmit.bind(this);
+                this.order = this.order.bind(this);
+            }
+
+            handleChange(event) {
+                const { value : user } = event.target;
+
+                this.setState({ 
+                    value: user.toUpperCase(),
+                    message : ''
+                });
+            }
+
+            handleSubmit(event) {
+                event.preventDefault();
+
+                const { value : user } = this.state;
+
+                if( user.trim() === '' ){
+                    this.setState({ message : `Attention votre champ est vide`});
+
+                    return;
+                }
+
+                if(this.state.users.includes( user.trim() ) === false ){
+                    this.state.users.push(user);
+
+                    this.setState({
+                        users : this.state.users,
+                        value: '',
+                        message : `Votre utilisateur : ${user} a bien été ajouté dans la base`
+                    });
+
+                    return;
+                }
+
+                this.setState({ message : `Attention cet utilisateur existe déjà : ${user}`});
+            }
+
+            order(){
+                if(this.state.order)
+                    this.state.users.sort();
+                else
+                    this.state.users.sort().reverse();
+
+                this.setState({ users : this.state.users, order : !this.state.order })
+            }
+
+            render() {
+
+                const { users, message, order } = this.state;
+
+                return (
+                    <React.Fragment>
+                        {  message && <p>{message}</p> }
+                        <form onSubmit={this.handleSubmit}>
+                            <label>
+                                Username:
+                                <input type="text" value={this.state.value} onChange={this.handleChange} />
+                            </label>
+                            <input type="submit" value="Add user" />
+                        </form>
+                        {/* 
+                            On peut utiliser cette syntaxe conditionnelle pensez à mettre des parenthèses pour forcer l'évaluation JS si
+                            vous avez plusieurs lignes dans la deuxième condition.
+                        */}
+                        {users.length > 1 && (
+                            <p><button onClick={this.order}>{order ? 'croissant' : 'dé-croissant'}</button></p> 
+                          )}
+                        { users.length > 0 && <Users users={users} /> }
+                    </React.Fragment>
+                );
+            }
+        }
+
+        class Users extends React.Component{
+            render() {
+                const { users } = this.props;
+
+                return (
+                    <ul>
+                        { users.map((user, i) => (<li key={i}>{user}</li>))}
+                    </ul>
+                );
+            }
+        }
+
+        ReactDOM.render(
+            <App />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+
+</html>

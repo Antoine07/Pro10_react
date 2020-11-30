@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .heading {
+            color: purple;
+        }
+
+        .principal {
+            background-color: beige;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        //const App = props => <p>Hello React</p>;
+            
+        const App = props => {
+            // Crochet qui importe le Hook state
+            // count c'est comme le this.state, setCount c'est le this.seState() pour la classe
+            const [count,setCount ] = React.useState(10);
+            const [count2,setCount2 ] = React.useState(11);
+
+            const [life,setLife ] = React.useState(true);
+
+
+            // exécuter on montage après le render et pour toute states/props qui changent
+            React.useEffect(() => {
+               console.log('1. Au montage', Math.random()) 
+
+               setCount( count => count + 1 ); // mettre à jour le count dans le composant
+
+            // 
+            React.useEffect(() => {
+               console.log('2. Au montage count', Math.random()) // exécuter dès qu'un state change count 
+            }, [count]); // on peut passer un tableau pour demandé au useEffect de n'écouter que des changements de certain(s) state(s)
+
+            React.useEffect(() => {
+               console.log('3. Au montage count & count2', Math.random()) // exécuter dès qu'un state change count ou count2
+            }, [count, count2]); // on peut passer un tableau pour demandé au useEffect de n'écouter que des changements de certain(s) state(s)
+
+            // Execute une seule fois après le montage après le render
+            React.useEffect(() => {
+               console.log('4. Au montage Une seule fois ', Math.random()) 
+
+               setTimeout(() => {
+                    setLife(false);
+               }, 2000);
+            }, []);
+
+            console.log('Render')
+
+            return (
+                <React.Fragment>
+                    <p>Count : {count} count2 : {count2}</p>
+                    <div>
+                        <button onClick={()=> setCount( count + 1)}>Increment</button>
+                    </div>
+                    <div>
+                        <button onClick={()=> setCount2( count2 + 1)}>Increment 2</button>
+                    </div>
+                    { life && <p>Vivant</p>}
+                    { life && <ComponentUmount /> }
+                    <p>{props.title}</p>
+                </React.Fragment>
+            )
+        };
+
+        const ComponentUmount = () => {
+            React.useEffect(() => {
+               console.log('mount');
+
+               // la fonction de nettoyage componentWillUnmount
+               return () => {
+                   console.log('umount')
+               }
+            }, []);
+
+
+            return(
+                <p>Composant umount</p>
+            )
+        }
+        
+        ReactDOM.render(
+            <App title="Bonjour React"/>,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+
+</html>

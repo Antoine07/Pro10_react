@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .heading {
+            color: purple;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+class TestState extends React.Component {
+            constructor(props) {
+                super(props);
+
+                // définition du state, un simple litteral
+                this.state = {
+                    count: 0
+                };
+
+                console.log('1 . Constructor');
+
+            }
+
+            // Life cycle elle est exécutée dès que le DOM est ready
+            componentDidMount() {
+                console.log('3 . Mounted');
+
+                // Update state
+                setInterval(
+                    () => {
+                        this.setState({ count: this.state.count + 1 }); // refaire le render 
+                        //this.state.count = this.state.count + 1;
+                        console.log(this.state.count);
+                    }, 1000
+                )
+            }
+
+            render() {
+                console.log('2 . Render');
+
+                return (
+                    <div>
+                        <p>Count: {this.state.count} </p>
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(
+            <TestState />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+
+</html>

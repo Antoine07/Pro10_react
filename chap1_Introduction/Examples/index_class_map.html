@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .heading{
+            color: purple;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        // Création de composant en créant des classes
+        class Hello extends React.Component {
+
+            render() {
+                
+                // Si on veut afficher le tableau suivant dans le rendu vous êtes obligé 
+                // d'utiliser un map
+                const elems = ['a', 'b', 'c', 'd' ];
+                
+                return (
+                    <div>
+                        <ul>
+                            { /* 
+                            syntaxe avec accolade pour retourner du code avec la fonction fléchée 
+                            Optimisation React avec la clé key
+                            n'oubliez pas la clé key pour React afin qu'il puisse identifier cet élément dans le DOM
+                        */}
+                            {elems.map( (elem, i) => ( <li key={i}>{elem}</li> ) )}
+                        </ul>
+                    </div>
+                )
+            }
+        }
+
+        // Rendu dans le DOM
+        ReactDOM.render(
+            <Hello message="Hello React" subtitle="Enjoy ! " />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+
+</html>

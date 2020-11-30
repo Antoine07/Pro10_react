@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .heading{
+            color: purple;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        // Création de composant en créant des classes
+        class Hello extends React.Component {
+
+            render() {
+                // lecture seule pour les props
+               // this.props.message = "Hello Angular";
+
+               const myStyle = { backgroundColor : 'red' } ;
+               const number = 1;
+                
+                return (
+                    // Attention vous devez toujours pour composants les mettre dans un div container (wrapper)
+                    <div>
+                        <div className={ 'main' + 8 /* JSX interprète le code JS dans les accolades simples */  } >
+                            <h1 className="main__title">{this.props.message}</h1>
+                            <p style={ myStyle } >{this.props.subtitle}</p>
+                            <p className={`main_paragraphe_${number}`}>Hello</p>
+                        </div>
+                        <p>Hello</p>
+                    </div>
+                    // <div>Hello</div> // ne machera pas car pas dans un container
+                )
+            }
+        }
+
+        // Rendu dans le DOM
+        ReactDOM.render(
+            <Hello message="Hello React" subtitle="Enjoy ! " />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+
+</html>

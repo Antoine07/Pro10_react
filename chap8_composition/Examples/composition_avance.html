@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .heading{
+            color: purple;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <!-- 
+        type pour babel afin qu'il transpile le code en JS pour le navigateur 
+    -->
+    <script type="text/babel">
+
+        class ContentNew extends React.Component {
+
+        render() {
+
+            return (
+                <p>Une news date : {(new Date).toLocaleDateString()} </p>
+            );
+            }
+        }
+
+        class App extends React.Component {
+                
+                render() {
+
+                    return (
+                       <Container sidebar={<ContentNew />} >
+                            <Post title="post 1" />
+                            <Post title="post 2" />
+                            <Post title="post 3" />
+                       </Container>
+                    );
+                }
+        }
+
+        class Container extends React.Component {
+        
+            render() {
+
+                // children est une propriété de React qui permet de faire de la composition
+                return (
+                    <div className="container-main">
+                        <div className="container-content">
+                            {this.props.children}
+                        </div>
+                        <div className="container-sidebar">
+                            {this.props.sidebar}
+                        </div>
+                    </div>
+                );
+            }
+        }
+
+        class Post extends React.Component {
+
+            render(){
+                const { title } = this.props;
+
+                return(
+                    <aside className="post">
+                        <h1>{title}</h1>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse quis adipisci iure unde, quod iusto cumque ad laboriosam inventore deserunt mollitia tenetur earum, sed reiciendis quo consequatur voluptatum, vitae sit.</p>
+                    </aside>
+                )
+            }
+        }
+
+        // Rendu dans le DOM
+        ReactDOM.render(
+            <App />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+</html>

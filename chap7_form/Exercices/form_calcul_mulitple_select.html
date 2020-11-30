@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .heading {
+            color: purple;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        class App extends React.Component {
+
+            render() {
+                
+                return (
+                    <Form />
+                )
+            }
+        }
+
+        class Form extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = { 
+                    number: '0', 
+                    multiples : [],
+                    message : '',
+                };
+
+                this.handleChange = this.handleChange.bind(this);
+                this.handleSubmit = this.handleSubmit.bind(this);
+            }
+
+            handleChange(event) {
+                const { value : number } = event.target;
+
+                this.setState({ 
+                    number : number,
+                    message : '',
+                    multiples : []
+                });
+            }
+
+            handleSubmit(event) {
+                event.preventDefault();
+
+                const { number } = this.state;
+
+                if( parseInt(number) != number || number > 100 ){
+                    this.setState({ message : `Manifestement il y a eu un problème ... Sélectionnez une valeur ...`});
+
+                    return;
+                }
+
+                if(this.state.multiples.length > 0 ){
+                    this.setState({ message : `Attention vous devez faire un nouveau choix`});
+
+                    return;
+                }
+
+                if( parseInt(number) == 0  ){
+                    this.setState({ message : `Sélectionnez une valeur ...`});
+
+                    return;
+                }
+
+                let multiple = number;
+                this.state.multiples.push(number);
+
+                for (let i = 2;  i < 100 ; i++) {
+                    multiple = i * number;
+
+                    if( multiple > 100) break;
+
+                    this.state.multiples.push(multiple);
+                }
+
+                this.setState({ multiples : this.state.multiples });
+            }
+
+            render() {
+                const { number, message, multiples } = this.state;
+
+                // astuce pour générer un tableau de 11 valeurs à l'aide d'un itérateur Array(11).keys()
+                /*
+                    // Un itérateur c'est une fonction avec une étoile en JS
+                    // pour récupérer les valeurs dans l'itérateur il faut itérer dessus boucle for/of ou spread operator dans un array
+                    const iterator = function* () {
+                        yield 1; // première itération
+                        yield 2; // deuxième itération
+                        yield 3; // troisième itération 
+                        // quand plus de yield ça s'arrête
+                    };
+                */
+                const choices = [ ...Array(11).keys() ].map( num => num + 1 ); 
+
+                return (
+                    <React.Fragment>
+                        {  message && <p>{message}</p> }
+                        <form onSubmit={this.handleSubmit}>
+                            <h2>Choisissez un nombre dans le select ci-dessous</h2>
+                            <select defaultValue={number} onChange={this.handleChange}>
+                                    {choices.map((num, i) =>(<option key={i}>{num}</option>))}
+                                    <option  value="0">Faites un choix</option>
+                            </select>
+                            <div style={{ marginTop: "20px", padding : "5px" }}>
+                                <input  type="submit" value="Calculer" />
+                            </div>
+                        </form>
+                        { multiples.length > 0 && (
+                            <ul>
+                                {multiples.map((num, i) => (<li key={i}>{num}</li>))}
+                            </ul>
+                        ) }
+                    </React.Fragment>
+                );
+            }
+        }
+
+        ReactDOM.render(
+            <App />,document.getElementById('root')
+        );
+    </script>
+</body>
+
+</html>

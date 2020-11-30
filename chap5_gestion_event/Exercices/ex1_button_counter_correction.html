@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .app_btn {
+            margin: 2rem;
+        }
+
+        .app__center {
+            text-align: center;
+            font-size: 2rem;
+        }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const container = document.getElementById('root');
+        const SECOND = 500;
+        const MAX_COUNT = 20;
+
+        class CounterBinary extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    count: 0,
+                    active : false
+                }
+
+                // Bind de la fonction pour l'effet de bord avec le this
+                this.start = this.start.bind(this); 
+                this.stop = this.stop.bind(this); 
+                this.reset = this.reset.bind(this); 
+
+                this.interval = null;
+            }
+
+            start() {
+                // lorsqu'on clique plusieurs sur le btn sans le disabled
+                clearInterval(this.interval);
+                this.setState({ active : true }) ;
+
+                this.interval = setInterval(()=>{
+
+                    if( this.state.count >= this.props.max ){
+
+                        this.reset();
+
+                        return;
+                    }
+                    this.setState({
+                        count :  this.state.count  + 1 
+                    })
+                }, SECOND);
+            }
+
+            conversion(num, base = 2) {
+
+                return num === '' ? '' : parseInt(num, 10).toString(base);
+            }
+
+            stop(){
+                clearInterval(this.interval);
+                this.setState({ active : false }) ;
+            }
+
+            reset(){
+                clearInterval(this.interval);
+                this.setState({ count : 0, active : false });
+            }
+
+            render() {
+                const { count, active } = this.state;
+                const { step } = this.props;
+
+                return (
+                    <div>
+                        <button
+                            className="btn btn-primary app_btn"
+                            onClick={this.start}
+                            disabled={active}
+                        >
+                            Start + { step } 
+                            { ( this.props.cycle && this.props.cycle == true ) ? ' Cyclique ' : null }
+                        </button>
+                        <button
+                            onClick={this.stop}
+                            className="btn btn-primary app_btn"
+                            disabled={!active}
+                        >
+                            Stop
+                        </button>
+                       
+                            <button
+                                onClick={this.reset}
+                                className="btn btn-primary app_btn"
+                            >
+                           Reset 
+                           </button>
+                        <p className="app__center">{this.conversion(count)}</p>
+                    </div>
+                );
+            }
+        }
+
+        class Counter extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    count: 0,
+                    active : false
+                }
+
+                // Bind de la fonction pour l'effet de bord avec le this
+                this.start = this.start.bind(this); 
+                this.stop = this.stop.bind(this); 
+                this.reset = this.reset.bind(this); 
+
+                this.interval = null;
+            }
+
+            start() {
+                // lorsqu'on clique plusieurs sur le btn sans le disabled
+                clearInterval(this.interval);
+                this.setState({ active : true }) ;
+
+                this.interval = setInterval(()=>{
+
+                    if( this.state.count >= this.props.max ){
+
+                        if( this.props.cycle && this.props.cycle === true ){
+                            this.reset();
+                            this.start();
+
+                            return;
+                        }
+
+                        this.reset();
+
+                        return;
+                    }
+                    this.setState({
+                        count :  ( this.state.count + this.props.step ) 
+                    })
+                }, SECOND);
+            }
+
+            stop(){
+                clearInterval(this.interval);
+                this.setState({ active : false }) ;
+            }
+
+            reset(){
+                clearInterval(this.interval);
+                this.setState({ count : 0, active : false });
+            }
+
+            render() {
+                const { count, active } = this.state;
+                const { step } = this.props;
+
+                return (
+                    <div>
+                        <button
+                            className="btn btn-primary app_btn"
+                            onClick={this.start}
+                            disabled={active}
+                        >
+                            Start + { step } 
+                            { ( this.props.cycle && this.props.cycle == true ) ? ' Cyclique ' : null }
+                        </button>
+                        <button
+                            onClick={this.stop}
+                            className="btn btn-primary app_btn"
+                            disabled={!active}
+                        >
+                            Stop
+                        </button>
+                       
+                            <button
+                                onClick={this.reset}
+                                className="btn btn-primary app_btn"
+                            >
+                           Reset 
+                           </button>
+                        <p className="app__center">{count}</p>
+                    </div>
+                );
+            }
+        }
+
+        class App extends React.Component {
+
+            render() {
+
+                return (
+                    <div>
+                        <Counter step={1} max={MAX_COUNT} />
+                        <Counter step={2} max={MAX_COUNT} />
+                        <Counter step={1} max={MAX_COUNT} cycle={true} />
+                        <CounterBinary step={"01"} max={MAX_COUNT} />
+                    </div>
+                )
+            }
+        }
+
+        ReactDOM.render(
+            <App />,
+            container
+        );
+
+
+    </script>
+</body>
+
+</html>

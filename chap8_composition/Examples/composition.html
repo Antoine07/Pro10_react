@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .heading{
+            color: purple;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <!-- 
+        type pour babel afin qu'il transpile le code en JS pour le navigateur 
+    -->
+    <script type="text/babel">
+
+        class App extends React.Component {
+                
+                render() {
+
+                    return (
+                       <Widget>
+                            <h2>Voici un exemple de composition</h2>
+                            <Sidebar />
+                       </Widget>
+                    );
+                }
+            }
+
+
+        class Widget extends React.Component {
+        
+            render() {
+
+                // children est une propriété de React qui permet de faire de la composition
+                return (
+                    <div className="container-widget">
+                        {this.props.children}
+                    </div>
+                );
+            }
+        }
+
+        class Sidebar extends React.Component {
+
+
+            render(){
+
+                return(
+                    <aside className="sidebar">
+                        <Widget color="red" >
+                            <nav>
+                                <a href="#" >Red sidebar</a>
+                            </nav>
+                        </Widget>
+                        <Widget color="yellow" >
+                            <nav>
+                                <a href="#" >Yellow sidebar</a>
+                            </nav>
+                        </Widget>
+                    </aside>
+                )
+            }
+        }
+
+        // Rendu dans le DOM
+        ReactDOM.render(
+            <App />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+</html>
