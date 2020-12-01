@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .heading {
+            color: purple;
+        }
+
+        .principal {
+            background-color: beige;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        // définition de la source de vérité, elle doit pas changer, c'est comme un modèle
+        const initialState = {
+            number1 : '',
+            number2 : '',
+            result : 0,
+            message : ''
+        }
+
+        const reducer = (state, action) => {
+            switch(action.type){
+
+                case 'ON_CHANGE': 
+
+                    const { name, value } = action;
+
+                    // toujours avoir la même structure de sortie
+                    return {
+                        ...state,
+                        [name] : value,  // [name] ça permet de récupérer la clé number1 number2 comme valeur pour la clé
+                        message : ''
+                    }
+                
+                case 'MULT':
+                case 'ADD':
+                    const { number1, number2 } = state;
+
+                    // trim supprime les espaces avant et après pour la fonction trim identique à PHP
+                    if( number1.trim() === '' || number2.trim() === ''){
+
+                        return {
+                            ...state,
+                            message : "Attention un des champs au moins est vide"
+                        }
+                    }
+
+                    // vérification pour le type
+                    if( parseFloat( number1 ) != number1 ||  parseFloat( number2 ) != number2 ){
+
+                        return {
+                            ...state,
+                            message : "Attention l'une des valeurs au moins n'est pas un numérique"
+                        }
+                    }
+
+                    let result = 0;
+
+                    if(action.operator === 'addition')
+                        result = parseFloat(number1) + parseFloat(number2);
+                    
+                    if(action.operator === 'multiplication')
+                        result = parseFloat(number1) * parseFloat(number2);
+
+                    return {
+                        ...state,
+                        result : result
+                    }
+
+                case 'RESET':
+
+                    return {
+                        ...state,
+                        ...initialState // on peut utiliser l'initial state pour mettre à jour le state
+                    }
+
+                default:
+                    return state;
+            }
+        }
+
+        const Calculate = () => {
+            const [state, dispatch] = React.useReducer(reducer, initialState);
+            const { number1, number2, result, message } = state;
+
+            const handleChange = e => {
+                const { name, value } = e.target;
+
+                // on passe action au dispatch 
+                dispatch({ type : "ON_CHANGE" , name : name, value : value });
+            }
+
+            return(
+                <React.Fragment>
+                    <h1>Calculatrice</h1>
+                    <p>{number1}, {number2}</p>
+                    { message && <p>{message}</p>}
+                    <div>
+                        <input type="text" value={number1} onChange={handleChange} name="number1" />
+                    </div>
+                    <div>
+                        <input type="text" value={number2} onChange={handleChange} name="number2" />
+                    </div>
+                    <div>
+                        <button onClick={() =>  dispatch({type : "ADD", operator : "addition" })}>+</button>
+                    </div>
+                    <div>
+                        <button onClick={() =>  dispatch({type : "ADD", operator : "multiplication" })}>*</button>
+                    </div>
+                    <div>
+                        <button onClick={() => dispatch({type : "RESET"})}>reset</button>
+                    </div>
+                    <p>Résultat : {result}</p>
+                </React.Fragment>
+            )
+        }
+
+        
+        ReactDOM.render(
+            <Calculate/>,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+
+</html>
