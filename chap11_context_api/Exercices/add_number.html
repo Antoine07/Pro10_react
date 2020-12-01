@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+    <style>
+        .heading {
+            color: purple;
+        }
+
+        .principal {
+            background-color: beige;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const NumberContext = React.createContext([]);
+        const initialState = {
+            numbers : [],
+            number : '',
+            message : ''
+        }
+
+        // 2. Reducer l'algorithmique de l'application 
+        const reducer = (state, action) =>{
+            switch(action.type){
+                case 'ON_CHANGE':
+                    
+                    return {
+                        ...state,
+                        number : action.number,
+                        message : ''
+                    }
+                
+                case 'ADD':
+
+                    if( state.number.trim() === ''){
+
+                        return {
+                            ...state,
+                            message : 'Attention votre champ est vide'
+                        }
+                    }
+
+                    if( parseFloat(state.number) != state.number ){
+
+                        return {
+                            ...state,
+                            message : `Attention vous n'avez pas saisi un numérique : ${state.number}`,
+                            number : ''
+                        }
+                    }
+
+                    return {
+                        ...state,
+                        numbers : state.numbers.concat(state.number),
+                        number : ''
+                    }
+
+                default:
+                    return state;
+            }
+
+        }
+
+        const NumberProvider = ({ children }) => {
+            const [state, dispatch] = React.useReducer(reducer, initialState);
+
+            return (
+                <NumberContext.Provider value={[state, dispatch]}>
+                    {children}
+                </NumberContext.Provider>
+            )
+        }
+
+        const Numbers = ()  => {
+            const  [state, dispatch] = React.useContext(NumberContext);
+
+            const handleSubmit = e => {
+                e.preventDefault();
+
+                dispatch({ type : 'ADD'}) ;
+            }
+
+            return(
+                <React.Fragment>
+                    <h1>Numbers</h1>
+                    { state.message && <p>{state.message}</p> }
+                    <form onSubmit={handleSubmit}>
+                        <div>
+                            <input type="text"  value={state.number} onChange={(e) => dispatch({type :'ON_CHANGE', number : e.target.value })} />
+                        </div>
+                        <div>
+                            <button>Add</button>
+                        </div>
+                    </form>
+                    { state.numbers.length > 0 && (
+                        <ul>
+                            {state.numbers.map((number, i) => <li key={i} >{number}</li>)}
+                        </ul>
+                    )}
+                </React.Fragment>
+            )
+        }
+
+        const Container = ({children}) => {
+
+            return (
+                <div className="Container">
+                    {children}
+                </div>
+            )
+        }
+
+        const App = () => {
+            const  [state, dispatch] = React.useContext(NumberContext);
+
+            return (
+                <Container>
+                    <h1>Nombre de number(s) : {state.numbers.length}</h1> 
+                    <Numbers />
+                </Container>
+            )
+        };
+
+        const CONTAINER = document.getElementById('root');
+
+        ReactDOM.render(
+            <NumberProvider>
+                <App />
+            </NumberProvider>,
+            CONTAINER
+        );
+    </script>
+</body>
+
+</html>
