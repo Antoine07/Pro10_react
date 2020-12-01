@@ -6,8 +6,6 @@ En récupérant le code de l'exercice context_api.html ajoutez un bouton permett
 
 ## TP
 
-# Sujet 01
-
 Créez le projet num-characters à l'aide de CRA. Puis vous devez mettre les dépendances suivantes dans le projets :
 
 - styled-components pour la gestion des styles CSS-IN-JS.
