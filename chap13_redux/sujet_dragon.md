@@ -37,6 +37,8 @@ const { name, force } = action.payload;
 
 Utilisez ces constantes dans ce sujet.
 
+Utilisez de préférence Sytled-components pour la gestion des styles.
+
 ### Reducer
 
 Dans le fichier dragons.js
@@ -65,19 +67,21 @@ let reducerDragon = (state = stateInit, action = {}) => {
 }
 export default reducerDragon;
 ```
-Affichez la liste des dragons dans la colonne de droite.
-
 
 ### Partie 1 ajout d'un dragon
 
 Rendez fonctionnel l'ajout du dragon. Puis utilisez Redux pour mettre à jour la liste des dragons dans la colonne de droite.
-Faites en sorte que l'incrémentation du nombre de dragons se fasse également dans une barre de navigation (voyez l'image précédente).
+Faites en sorte que l'incrémentation du nombre de dragons se fasse également dans une barre de "navigation" (voyez l'image précédente).
 Gérez les erreurs lors de l'insertion d'un dragon (champ vide, insertion d'un même dragon interdit).
 Vous afficherez dans la barre de navigation le nombre de dragon(s) dans le store.
 
 Wireframe
 
 ```txt
+
+Dragon list number dragon(s) : 2.        <-- Bar de "navigation"
+--------------------------------
+
 Add Dragon : [ ]   *   Typhon
                    *   Vipor
 [Add]              *
@@ -91,6 +95,10 @@ Vous allez maintenant ajouter la fonctionnalité de suppression d'un dragon. Fai
 Wireframe
 
 ```txt
+
+Dragon list number dragon(s) : 2.        <-- Bar de "navigation"
+--------------------------------
+
 Add Dragon : [ ]   *   Typhon [Delete]
                    *   Vipor  [Delete]
 [Add]              *
@@ -104,6 +112,9 @@ Ajoutez un bouton dans l'application qui permet d'inverser l'ordre d'affichage d
 Wireframe
 
 ```txt
+
+Dragon list number dragon(s) : 2.        <-- Bar de "navigation"
+--------------------------------
 
 [ Reverse Order ]
 
