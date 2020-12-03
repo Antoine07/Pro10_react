@@ -1,4 +1,4 @@
-# Sujet 03 Liste de Dragons Mise en place
+# Liste de Dragons Mise en place
 
 Nous partirons d'un squelette d'application (create-react-app CRA) qui permettra d'ajouter/supprimer des dragons d'une liste définie.
 
