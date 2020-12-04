@@ -6,3 +6,7 @@ export const REVERSE_DRAGON = "REVERSE_DRAGON";
 
 // History 
 export const ADD_HISTORY = "ADD_HISTORY";
+
+
+//KNIGHT
+export const ADD_KNIGHT = "ADD_KNIGHT";

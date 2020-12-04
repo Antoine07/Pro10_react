@@ -10,16 +10,34 @@ import {
   delete_dragon,
   reverse_dragon,
   set_dragon,
+  set_knight,
+  add_knight
 } from "./actions/actions-types";
 
 const App = () => {
-  const { count, dragon, dragons, message, history } = useSelector((state) => {
+  // les constantes par décomposition (voir ce que vous retournez dans le state)
+  const {
+    count,
+    dragon,
+    dragons,
+    messageDragon,
+    history,
+    knight,
+    knights,
+    messageKnight,
+  } = useSelector((state) => {
     return {
+      // chaque clé/valeur retournée est assigné aux constantes
       count: state.dragon.count,
       dragon: state.dragon.dragon,
       dragons: state.dragon.dragons,
-      message: state.dragon.message,
+      messageDragon: state.dragon.message,
+
       history: state.history.history,
+
+      knight: state.knight.knight,
+      knights: state.knight.knights,
+      messageKnight: state.knight.message,
     };
   });
 
@@ -28,15 +46,21 @@ const App = () => {
   const handleChange = (e) => {
     const { value, name } = e.target;
 
-    dispatch(set_dragon({ name, value }));
+    if (name === "dragon") dispatch(set_dragon({ name, value }));
+    if (name === "knight") dispatch(set_knight({ name, value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const { name } = e.target;
 
-    dispatch(add_dragon());
+    if (name === "dragon") dispatch(add_dragon());
+    if (name === "knight") dispatch(add_knight());
 
-    // history
+    // history 
+    if (dragon.trim() === "" && knight.trim() === "") return;
+
+    // on arrive ici si un des deux champs n'est pas vide 
     const date = new Date();
     const status = "add";
     dispatch(add_history({ dragon, date, status }));
@@ -62,8 +86,8 @@ const App = () => {
       </Cell>
 
       <Cell>
-        {message && <p>{message}</p>}
-        <form onSubmit={handleSubmit}>
+        {messageDragon && <p>{messageDragon}</p>}
+        <form onSubmit={handleSubmit} name="dragon">
           <div>
             <input
               type="text"
@@ -72,7 +96,20 @@ const App = () => {
               onChange={handleChange}
             />
           </div>
-          <Button>Add</Button>
+          <Button>Add dragon</Button>
+        </form>
+
+        <form onSubmit={handleSubmit} name="knight">
+          {messageKnight && <p>{messageKnight}</p>}
+          <div>
+            <input
+              type="text"
+              name="knight"
+              value={knight}
+              onChange={handleChange}
+            />
+          </div>
+          <Button>Add knight</Button>
         </form>
       </Cell>
       <Cell>
@@ -85,13 +122,26 @@ const App = () => {
             </Fragment>
           ))}
         </ul>
+        <ul>
+          {knights.map((knight, i) => (
+            <Fragment key={i}>
+              <li>{knight}</li>
+            </Fragment>
+          ))}
+        </ul>
       </Cell>
       <Cell width={2}>
-        { history.length > 0 && (
+        {history.length > 0 && (
           <ul>
-            {history.map((h, i) => <li key={i}>Name : {h.dragon} Date : {h.date.toLocaleString()} Status : {h.status}</li>)}
+            {history.map((h, i) => (
+              <li key={i}>
+                Name : {h.dragon} Date : {h.date.toLocaleString()} Status :{" "}
+                {h.status}
+              </li>
+            ))}
           </ul>
         )}
+        
       </Cell>
     </Grid>
   );

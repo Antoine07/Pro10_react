@@ -3,7 +3,8 @@ import {
     ADD_DRAGON,
     DELETE_DRAGON,
     REVERSE_DRAGON,
-    ADD_HISTORY
+    ADD_HISTORY,
+    ADD_KNIGHT
 } from '../constants/actions';
 
 // Dragon
@@ -39,5 +40,20 @@ export const add_history = payload => {
 
     return {
         type : ADD_HISTORY, payload
+    }
+}
+
+// Knight
+export const set_knight = payload => {
+
+    return {
+        type : ON_CHANGE, payload
+    }
+}
+
+export const add_knight = () => {
+
+    return {
+        type : ADD_KNIGHT
     }
 }
