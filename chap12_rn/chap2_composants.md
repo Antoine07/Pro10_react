@@ -417,11 +417,22 @@ Ce composant fait partie des composants principaux de React Native. Il vous perm
 
 Utilisez pour l'instant snack.expo pour faire l'exercice [sandbox](https://snack.expo.io/)
 
-Créez un champ centré permettant de saisir une chaine de caractères. Affichez le nombre de caractères saisis en dessus du champ, à chaque fois qu'il y a un espace compter le nombre de caractères par mot et affichez le :
+1. Créez un champ centré permettant de saisir une chaine de caractères. Affichez le nombre de caractères saisis par mot, sans compter les espaces.
 
+2. Ajoutez un bouton qui inverse la phrase saisie et un bouton qui efface la saisie.
+
+
+Voir le Wireframe ci-dessous pour vous aider :
+
+```text
 [ Hello World !]
 
 5 5 1
+
+[reverse]
+[clear]
+
+```
 
 ### Exercice votes 
 
