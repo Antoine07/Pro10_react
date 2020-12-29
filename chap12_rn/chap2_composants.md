@@ -527,6 +527,27 @@ Puis, une fois les votes terminées on affichera les résultats.
 
 Le bouton Reset Favorites permettra de réinitialiser les votes. Si on clique dessus dans ce cas ré-afficher la première vue fig 1 ci-dessus.
 
+Pour cette dernière partie faites une nouvelle branche history.
+
+3. Ajoutez un reducer history. Celui-ci mémorisera l'historique des différents votes effectués dans l'application maximun 10 essais. Vous afficherez, en utilisant l'historique, dans le composant Favorite le pourcentage des votes par candidats. Voyez l'exemple qui suit :
+
+```text
+---------------------------------
+| Welcone                       |
+| React Native                  |
+| total essai(s) :              |
+| 10.                           |
+|-------------------------------|
+|   1. Alan 0.2 Juliette 0.01   |
+|   2. Phi  0.1 Bernard  0.2    |
+|   3. Elise 0.2 Lisa   0.09    |
+|   4. Alice  0.1 Cecilia  0.1  |
+---------------------------------
+|         Reset Favorites       |
+---------------------------------
+```
+
+
 ## Exercice Navigation School App 3h
 
 Vous allez créer une application listant des étudiants avec leur nombre d'abscence(s) et les cours qu'ils suivent. Une page présentera tous les cours et une autre permettra d'administrer (ajouter) une abscence dans un premier temps. D'autres options sont à développer et détaillées dans ce qui suit. 
