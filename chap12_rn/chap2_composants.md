@@ -436,13 +436,21 @@ Voir le Wireframe ci-dessous pour vous aider :
 
 ### Exercice votes 
 
-Développez l'application votes suivante, vous pouvez utiliser snack.expo. Il y a 4 couples de deux candidats, à chaque fois l'utilisateur doit voter pour un candidat. Une fois tous les votes effectués on affichera les résultats sur une "page" différente. Un bouton reset est prévu pour réinitialiser les votes. Utilisez l'approche fonctionnelle de React ainsi que le Hook **useReducer** pour réaliser cet exercice. Faites deux composants : App et Favorite. Vous pouvez gérer, pour l'instant, le développement de ces deux composants dans le même fichier App.js.
+Développez l'application votes suivante, vous pouvez utiliser snack.expo, le mieux étant d'utiliser expo init maintenant. Il y a 4 couples de deux candidats, à chaque fois l'utilisateur doit voter pour un candidat. Une fois tous les votes effectués on affichera les résultats sur une "page" (pas de pagination à mettre en place pour l'instant) différente. Un bouton reset est prévu pour réinitialiser les votes.
+
+Faites deux composants : App et Favorite. 
+
+Vous devez utiliser l'approche fonctionnelle de React. Pour la gestion de la logique algorithmique et pour la mise à jour des données vous pouvez utiliser :
+
+- Soit un useReducer avec le context API de React
+
+- Soit un Redux
 
 Voyez les wireframes ci-dessous.
 
-Pensez à utiliser la documentation officiel pour réaliser cet exercice.
+Pensez à utiliser la documentation officiel pour réaliser cet exercice. Faites une esquisse de l'application sur papier avant de commencer le développement.
 
-Remarque sur le composant Button, ce dernier pose des problèmes de rendu (style CSS) sur iOS, on peut lui préférer une autre approche avec le composant suivant **TouchableOpacity**.
+Remarques sur le composant Button, ce dernier pose des problèmes de rendu (style CSS) sur iOS, on peut lui préférer une autre approche avec le composant suivant **TouchableOpacity**.
 
 \newpage
 
