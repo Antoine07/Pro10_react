@@ -518,8 +518,8 @@ Puis, une fois les votes terminées on affichera les résultats.
 |-----------------|
 |   1. Alan       |
 |   2. Phi        |
-|   3. It' Alice  |
-|   4. It' Lisa   |
+|   3. Elise      |
+|   4. Alice.     |
 -------------------
 | Reset Favorites |
 -------------------
