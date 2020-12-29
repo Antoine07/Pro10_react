@@ -494,7 +494,7 @@ Vous utiliserez également le composant **FlatList** il permet de rendre une lis
 
 ```
 
-- fig 1 composant App : on vote pour un des deux candidats.
+- fig 1 composant App : on vote pour un des deux candidats en cliquant sur un des deux noms sur cette page. Une fois que l'on a voté on passe aux choix suivants.
 
 ```text
 -------------------
@@ -507,7 +507,7 @@ Vous utiliserez également le composant **FlatList** il permet de rendre une lis
 -------------------
 ```
 
-Puis, on vote pour les 3 restants et on affiche alors le résultat des votes :
+Puis, une fois les votes terminées on affichera les résultats.
 
 - fig 2 composant Favorite (résultats des votes)
 
