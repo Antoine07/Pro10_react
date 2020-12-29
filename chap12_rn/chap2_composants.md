@@ -503,7 +503,7 @@ Vous utiliserez également le composant **FlatList** il permet de rendre une lis
 |-----------------|
 |   It's Alan     |
 |-----------------|
-|   It' Alice     |
+|   It' Juliette  |
 -------------------
 ```
 
