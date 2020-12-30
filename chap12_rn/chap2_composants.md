@@ -674,6 +674,110 @@ const initialState = {
 const copyInitialState = JSON.parse(JSON.stringify(initialState));
 ```
 
+Pour la copie de state vous pouvez également le faire de manière spécifique sur une clé de l'objet.
+
+## Première partie 
+
+Dans cette partie vous utiliserez le store directement copier dans un fichier (reducer). On verra la persistance dans la seconde partie avec Firebase.
+
+### Wireframe du projet (sans la partie login/password)
+
+Voici les différentes pages à réaliser :
+
+![page 1](images/nav_01.jpeg)
+\newpage
+
+La page Students affichera la liste des étudiants. Vous devez sur cette page afficher le nombre d'abscence, la moyenne et le nombre de cours suivis. Affichez pour chaque étudiant son avatar, voyez le code suivant pour l'implémenter dans React Native. Le composant Image est un composant de React Native. Les boutons Reset abscence et Ordre notes ne sont pas à faire pour l'instant.
+
+```js
+<Image
+  source={{ uri: 'http://lorempixel.com/100/100/cats/' + id }}
+  style={{ width: 100, height: 100, marginRight : 10 }}
+/>
+```
+
+![page 2](images/nav_02.png)
+\newpage
+
+
+4. Affichez maintenant l'ensemble des leçons :
+
+![page 3](images/nav_03.png)
+\newpage
+
+4. Administrer les abscences des étudiants.
+
+Pour chaque étudiant, vous ferez un lien cliquable sur la page qui liste les étudiants. Une fois que l'on aura cliqué sur un étudiant on affichera la page suivante qui permettra d'incrémenter/décrémenter le nombre d'abscence(s). On bloquera la possibilité de décrémenter les abscences en dessous de 0, attendance = 0 correspondra à pas d'abscence. Dans ce dernier cas le bouton pour décrémenter les abscences ne sera pas afficher.
+
+Si un étudiant à plus de 5 abscences vous changerez la couleur du background sur la page qui liste les étudiants (voir le wireframe précédent).
+
+ - Remarques sur la gestion du store pour travailler sur une copie de ce dernier voyez l'exemple qui suit, l'objectif n'est de ne pas changer l'initialState directement mais de travailler sur des copies.
+
+ ```js
+// Source de vérité initialState ne doit pas muter
+// const initialState = { ... }
+
+ // On crée un nouvel objet que l'on modifie
+student = { ...state.students.find(s => s.id === action.id) };
+student.attendance++;
+
+// Crée un nouveau tableau
+students = state.students.map( s => {
+    if ( s.id != action.id ) return s;
+
+    return student;
+});
+
+// puis on retourne le state avec un nouvel objet students 
+// les ...state sont nécessaires le pattern du flux est le suivant state => newState
+return { ...state, students : students }
+ ```
+
+![page 4](images/nav_04.png)
+\newpage
+
+Refactorisez votre application comme suit. Créez tout d'abord une branche refactoring :
+
+```bash
+git checkout -b refactoring
+```
+
+Puis organiser l'application comme suit :
+
+```txt
+assets/
+src/
+  screens/
+    AbscenceScreen.js
+    HomeScreen.js
+    StudentsScreen.js
+  store/
+    SchoolProvider.js
+  styles.js
+
+App.js
+```
+
+Une fois votre code refactoré créer un commit :
+
+```bash
+git add .
+git commit -m "refactoring ok"
+```
+
+5. Implémentez un bouton sur la page Students permettant de remettre à jour le nombre d'abscence de tous les étudiants.
+
+6. Ajoutez un bouton sur la page des étudiants permettant d'ordonner (toggle) la liste des étudiants par ordre croissant ou décroissant des moyennes.
+
+7. Lorsqu'on clique sur un étudiant on donnera en plus de la gestion de ses abscences la possibilité du lui attribuer une appréciation au niveau de son comportement :
+
+```js
+behaviours : [{ id : 1, mention : 'A'}, { id : 2, mention : 'B'}]
+```
+
+## Deuxième partie
+
+
 ### Firebase
 
 Firebase est un ensemble de services d'hébergement pour nos applications. Il propose par exemple d'hébgerger en NoSQL et en temps réel des bases de données, du contenu comme des images par exemple, des systèmes d'authentification sociale, comme Google, Facebook ou Github, mais également avec un système d'email/password. C'est cette dernière solution que vous mettrez en place dans l'application.
@@ -806,102 +910,6 @@ Vous utiliserez la documentation suivante afin d'effectuer l'ensemble de vos req
     "behaviours" :  [],
     "order": false
 }
-```
-
-
-### Wireframe du projet (sans la partie login/password)
-
-Voici les différentes pages à réaliser :
-
-![page 1](images/nav_01.jpeg)
-\newpage
-
-La page Students affichera la liste des étudiants. Vous devez sur cette page afficher le nombre d'abscence, la moyenne et le nombre de cours suivis. Affichez pour chaque étudiant son avatar, voyez le code suivant pour l'implémenter dans React Native. Le composant Image est un composant de React Native. Les boutons Reset abscence et Ordre notes ne sont pas à faire pour l'instant.
-
-```js
-<Image
-  source={{ uri: 'http://lorempixel.com/100/100/cats/' + id }}
-  style={{ width: 100, height: 100, marginRight : 10 }}
-/>
-```
-
-![page 2](images/nav_02.png)
-\newpage
-
-
-4. Affichez maintenant l'ensemble des leçons :
-
-![page 3](images/nav_03.png)
-\newpage
-
-4. Administrer les abscences des étudiants.
-
-Pour chaque étudiant, vous ferez un lien cliquable sur la page qui liste les étudiants. Une fois que l'on aura cliqué sur un étudiant on affichera la page suivante qui permettra d'incrémenter/décrémenter le nombre d'abscence(s). On bloquera la possibilité de décrémenter les abscences en dessous de 0, attendance = 0 correspondra à pas d'abscence. Dans ce dernier cas le bouton pour décrémenter les abscences ne sera pas afficher.
-
-Si un étudiant à plus de 5 abscences vous changerez la couleur du background sur la page qui liste les étudiants (voir le wireframe précédent).
-
- - Remarques sur la gestion du store pour travailler sur une copie de ce dernier voyez l'exemple qui suit, l'objectif n'est de ne pas changer l'initialState directement mais de travailler sur des copies.
-
- ```js
-// Source de vérité initialState ne doit pas muter
-// const initialState = { ... }
-
- // On crée un nouvel objet que l'on modifie
-student = { ...state.students.find(s => s.id === action.id) };
-student.attendance++;
-
-// Crée un nouveau tableau
-students = state.students.map( s => {
-    if ( s.id != action.id ) return s;
-
-    return student;
-});
-
-// puis on retourne le state avec un nouvel objet students 
-// les ...state sont nécessaires le pattern du flux est le suivant state => newState
-return { ...state, students : students }
- ```
-
-![page 4](images/nav_04.png)
-\newpage
-
-Refactorisez votre application comme suit. Créez tout d'abord une branche refactoring :
-
-```bash
-git checkout -b refactoring
-```
-
-Puis organiser l'application comme suit :
-
-```txt
-assets/
-src/
-  screens/
-    AbscenceScreen.js
-    HomeScreen.js
-    StudentsScreen.js
-  store/
-    SchoolProvider.js
-  styles.js
-
-App.js
-```
-
-Une fois votre code refactoré créer un commit :
-
-```bash
-git add .
-git commit -m "refactoring ok"
-```
-
-5. Implémentez un bouton sur la page Students permettant de remettre à jour le nombre d'abscence de tous les étudiants.
-
-6. Ajoutez un bouton sur la page des étudiants permettant d'ordonner (toggle) la liste des étudiants par ordre croissant ou décroissant des moyennes.
-
-7. Lorsqu'on clique sur un étudiant on donnera en plus de la gestion de ses abscences la possibilité du lui attribuer une appréciation au niveau de son comportement :
-
-```js
-behaviours : [{ id : 1, mention : 'A'}, { id : 2, mention : 'B'}]
 ```
 
 ### Exercice Algorithmique & Calculatrice
