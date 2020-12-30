@@ -1,17 +1,28 @@
-import React from 'react';
-import { Button, View, Text } from 'react-native';
+import React from "react";
+import { FlatList } from "react-native-gesture-handler";
+import { ItemMenu, Container } from "../Styles/Elems";
+import { useSelector } from "react-redux";
+import Student from "../components/Student";
 
-// Construction des menus
-const StudentsScreen = ({ navigation })  => {
+const StudentsScreen = ({ navigation }) => {
+  const { students } = useSelector((state) => state.s);
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Students Screen</Text>
-      <Button
-        title="Go to Home"
-        onPress={() => navigation.navigate('Home')}
+    <Container>
+      <ItemMenu onPress={() => navigation.navigate("Home")} title="Home" />
+      <ItemMenu
+        onPress={() => navigation.navigate("Students")}
+        title="Students"
+        active={true}
       />
-    </View>
+      <FlatList
+        data={students}
+        renderItem={({ item: student }) => {
+          return <Student {...student} navigation={navigation} />;
+        }}
+        keyExtractor={(item) => item.id.toString()}
+      />
+    </Container>
   );
-}
+};
 
 export default StudentsScreen;
