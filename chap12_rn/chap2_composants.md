@@ -714,23 +714,8 @@ Si un étudiant à plus de 5 abscences vous changerez la couleur du background s
  - Remarques sur la gestion du store pour travailler sur une copie de ce dernier voyez l'exemple qui suit, l'objectif n'est de ne pas changer l'initialState directement mais de travailler sur des copies.
 
  ```js
-// Source de vérité initialState ne doit pas muter
-// const initialState = { ... }
-
- // On crée un nouvel objet que l'on modifie
-student = { ...state.students.find(s => s.id === action.id) };
-student.attendance++;
-
-// Crée un nouveau tableau
-students = state.students.map( s => {
-    if ( s.id != action.id ) return s;
-
-    return student;
-});
-
-// puis on retourne le state avec un nouvel objet students 
-// les ...state sont nécessaires le pattern du flux est le suivant state => newState
-return { ...state, students : students }
+ // voici une fonction qui prend le state et le retourne en ayant fait une copie de students
+const deepCopyStudents = state => state.students.map(s => ({ ...s, notes : [ ...s.notes ] }));
  ```
 
 ![page 4](images/nav_04.png)
