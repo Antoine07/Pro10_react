@@ -31,7 +31,7 @@ export const Container = styled.SafeAreaView`
 
 export const ContainerStudent = styled.View`
   width: 350px;
-  background-color: #f9c2ff;
+  background-color: ${(props) => (props?.attendance >= 5 ? "#CCC" : "#f9c2ff")};
   padding: 20px;
   margin-vertical: 8px;
   margin-horizontal: 16px;

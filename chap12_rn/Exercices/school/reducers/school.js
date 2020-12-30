@@ -43,7 +43,9 @@ const stateInit = {
 };
 
 const reducer = (state = stateInit, action) => {
+  let newStudents = null, newStudent = null;
   switch (action.type) {
+   
     case GET_STUDENT:
       const student = state.students.find((s) => action.payload === s.id);
 
@@ -54,9 +56,7 @@ const reducer = (state = stateInit, action) => {
 
     case INCREMENT_ATTENDANCE:
       // copie profonde de l'objet students dans le state
-      const newStudents = deepCopyStudents(state);
-
-      let newStudent = null;
+      newStudents = deepCopyStudents(state);
       newStudents.map(student => {
           if(student.id === action.payload){
               student.attendance++;
@@ -71,6 +71,24 @@ const reducer = (state = stateInit, action) => {
         students: newStudents,
         student : newStudent
       };
+
+      case DECREMENT_ATTENDANCE:
+        newStudents = deepCopyStudents(state);
+        newStudents.map(student => {
+          if(student.id === action.payload && student.attendance > 0){
+              student.attendance--;
+          }
+
+          if(student.id === action.payload) newStudent = student;
+
+          return student;
+      })
+
+        return {
+          ...state,
+          students: newStudents,
+          student : newStudent
+        }
 
     default:
       return state;

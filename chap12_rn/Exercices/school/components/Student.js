@@ -12,7 +12,7 @@ const Student = ({ navigation, id, name, attendance, lessons, notes }) => {
       // Abscence est la clé définie dans la Stack du module react-navigation, la méthode
       // navigate peut accepter des paramètres , deuxième argument voir ci dessous :
     <TouchableOpacity onPress={() => navigation.navigate("Abscence", { id })}>
-      <ContainerStudent>
+      <ContainerStudent attendance={attendance} >
         <View style={{ width: 110 }}>
           <Image
             source={{ uri: `http://lorempixel.com/100/100/cats/${id}` }}

@@ -37,7 +37,7 @@ const AbscenceScreen = ({ navigation, route }) => {
       <ItemMenu
         onPress={() => dispatch(decrement_attendance(id))}
         title="Increment -1"
-        active={false}
+        active={ student?.attendance === 0}
       />
       {student && (
         <ContainerStudent>
