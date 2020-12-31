@@ -780,7 +780,7 @@ Firebase est un ensemble de services d'hébergement pour nos applications. Il pr
 
 Dans cette solution vous devez être connecté pour accéder à l'écriture sur votre base de données :
 
-```js
+```json
 {
     "rules": {
         ".read": true,
