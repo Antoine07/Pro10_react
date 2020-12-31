@@ -3,7 +3,8 @@ import {
   INCREMENT_ATTENDANCE,
   DECREMENT_ATTENDANCE,
   TOGGLE_ORDER_NOTES,
-  RESET
+  RESET,
+  SET_BEHAVIOURS
 } from "../constants/actions";
 
 export const get_student = (payload) => {
@@ -38,6 +39,11 @@ export const order_notes = () => {
   return { type: TOGGLE_ORDER_NOTES };
 }
 
+export const set_behaviours = () => {
+
+  return { type: SET_BEHAVIOURS };
+}
+
 // les notes et la partie décimale pour la précision
 // 100 => deux chiffres après la virgule
 const average = (notes, decimal = 100) => {
@@ -55,5 +61,28 @@ const deepCopyStudents = (state) =>
   // pensez bien dans les arrow function à retourner le littéral dans une expression ()
   state.students.map((s) => ({ ...s, notes: [...s.notes] }));
 
+const setMention = (attentance) => {
+  switch (true) {
+    case attentance === 0:
+      return 'A';
 
-export { average, deepCopyStudents };
+    case attentance >= 1 && attentance <= 2:
+      return 'B';
+
+    case attentance >= 3 && attentance <= 5:
+      return 'C';
+
+    default:
+      return 'D';
+  }
+}
+
+// En fonction des données, il faudrait peut être revoir la structure pour les abscences.
+// Pour l'instant pour la gestion des abscences on les fait dans la clé du littéral behaviors
+const getMention = (student, behaviors) => {
+
+  // si non faux ?? et sinon ( on fait ce qu'il y a dans le ternaire )
+  return behaviors.get(student.id) ?? (student.attendance === 0 ? 'A' : 'Aucune mention');
+}
+
+export { average, deepCopyStudents, setMention, getMention };

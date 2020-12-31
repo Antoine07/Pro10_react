@@ -3,10 +3,11 @@ import {
   INCREMENT_ATTENDANCE,
   DECREMENT_ATTENDANCE,
   TOGGLE_ORDER_NOTES,
-  RESET
+  RESET,
+  SET_BEHAVIOURS
 } from "../constants/actions";
 
-import { deepCopyStudents, average } from '../actions/actions-types';
+import { deepCopyStudents, average, setMention } from '../actions/actions-types';
 
 const stateInit = {
   students: [
@@ -41,8 +42,7 @@ const stateInit = {
   ],
   behaviours: new Map(),
   order: false,
-  student: null,
-  mentions: ['A', 'B', 'C', 'D']
+  student: null
 };
 
 const reducer = (state = stateInit, action) => {
@@ -62,6 +62,11 @@ const reducer = (state = stateInit, action) => {
       // copie profonde de l'objet students dans le state
       newStudents = deepCopyStudents(state);
 
+      // Pour faire une copie du Map
+      // Array.from prenne les clé/valeur du Map pour le transformer en tableau de tableau
+      // Puis à partir de ce tableau de tableau on crée un Map.
+      const behaviours = new Map( Array.from( state.behaviours.entries() ));
+
       for(const student of newStudents){
         // les objets student (même ref) ne sont pas des copies donc si vous les modifiez
         // ils le seront également dans newStudents 
@@ -69,6 +74,7 @@ const reducer = (state = stateInit, action) => {
           if( action.type === INCREMENT_ATTENDANCE ) student.attendance++;
           if( action.type === DECREMENT_ATTENDANCE && student.attendance >= 0 ) student.attendance--;
           newStudent = student;
+          behaviours.set(student.id, setMention(student.attendance));
 
           break; // refacto optimisation
         };
@@ -77,7 +83,8 @@ const reducer = (state = stateInit, action) => {
       return {
         ...state,
         students: newStudents,
-        student: newStudent
+        student: newStudent,
+        behaviours : behaviours
       };
 
     case RESET:
@@ -96,26 +103,28 @@ const reducer = (state = stateInit, action) => {
     case TOGGLE_ORDER_NOTES:
       newStudents = deepCopyStudents(state);
       const sens = state.order === true ? 1 : - 1;
-
       // array.sort((a, b) => a - b)
       // newStudents.sort((a, b) => (average(a.notes) - average(b.notes) >= 0 ? (1 * sens) : (-1 * sens) ) );
       newStudents.sort((a, b) => sens * (average(a.notes) - average(b.notes)  ) );
-
-      // [a, b, c, d]
-      // premiere boucle a
-      //  deuxième boucle sur [b,c,d]
-      //    if (a > b) 
-      //      permute a et b
-
-      // premiere boucle b
-      //  deuxième boucle sur [c,d]
-      //    if (b > c) 
-      //      permute a et b
       
       return {
         ...state,
         students: newStudents,
         order: !state.order
+      }
+
+    case SET_BEHAVIOURS:
+      newStudents = deepCopyStudents(state);
+
+      const newBehaviours = new Map();
+
+      newStudents.map( student =>{
+        newBehaviours.set(student.id, setMention(student.attendance));
+      });
+
+      return {
+        ...state,
+        behaviours : newBehaviours
       }
 
     default:

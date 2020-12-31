@@ -6,12 +6,12 @@ import StudentsScreen from "./screens/StudentsScreen";
 import HomeScreen from "./screens/HomeScreen";
 import AbscenceScreen from "./screens/AbscenceScreen";
 
-import { createStore } from "redux";
+import createStore from "./store/createStore";
 import { Provider } from "react-redux";
+const store = createStore();
 
-import reducer from "./reducers/index";
+console.log(store.getState());
 
-const store = createStore(reducer);
 const Stack = createStackNavigator();
 
 const Nav = () => {

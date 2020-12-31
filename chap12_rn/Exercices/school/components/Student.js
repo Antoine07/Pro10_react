@@ -6,7 +6,7 @@ import { ContainerStudent } from "../Styles/Elems";
 import { average } from '../actions/actions-types';
 
 // avec le spread de student on récupère les clés du littéral facilement par décomposition
-const Student = ({ navigation, id, name, attendance, lessons, notes }) => {
+const Student = ({ navigation, id, name, attendance, lessons, notes, mention }) => {
 
   return (
     // Abscence est la clé définie dans la Stack du module react-navigation, la méthode
@@ -30,7 +30,12 @@ const Student = ({ navigation, id, name, attendance, lessons, notes }) => {
           <Text style={{ padding: 2, marginBottom: 2 }}>
             Moyenne : {notes ? average(notes) : 'aucune note'}
           </Text>
-         
+          {mention && (
+            <Text style={{ padding: 2, marginBottom: 2 }}>
+              Mention : {mention}
+            </Text>
+          )}
+
         </View>
       </ContainerStudent>
     </TouchableOpacity>

@@ -3,7 +3,7 @@ import { FlatList } from "react-native-gesture-handler";
 import { ItemMenu, Container } from "../Styles/Elems";
 import { useDispatch, useSelector } from "react-redux";
 import Student from "../components/Student";
-import { order_notes, reset } from "../actions/actions-types";
+import { order_notes, reset, getMention } from "../actions/actions-types";
 
 const StudentsScreen = ({ navigation }) => {
   const { students, order, behaviours } = useSelector((state) => state.s);
@@ -22,9 +22,9 @@ const StudentsScreen = ({ navigation }) => {
       <FlatList
         data={students}
         renderItem={({ item: student }) => {
+          const mention = getMention(student, behaviours) ;
 
-          const mention = behaviours.get(student.id) ;
-          return <Student {...student} navigation={navigation}  />;
+          return <Student {...student} navigation={navigation} mention={mention} />;
         }}
         keyExtractor={(item) => item.id.toString()}
       />
