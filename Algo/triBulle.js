@@ -15,7 +15,14 @@ const triAbulle = (tab, comp) => {
     return tab;
 }
 
-console.log(triAbulle([6, 8, 1, 2], (a,b) => a > b))
+console.log(
+// sort sur un tableau fonctionne comme ça on lui passe une fonction qui détermine l'ordre de comparaison
+
+    triAbulle(
+        [6, 8, 1, 2], 
+        (a,b) => a > b // fonction qui détermine l'ordre de comparaison
+    )
+)
 
 /*
 [6, 8, 1, 2]
