@@ -9,8 +9,8 @@ import { average } from '../actions/actions-types';
 const Student = ({ navigation, id, name, attendance, lessons, notes }) => {
 
   return (
-      // Abscence est la clé définie dans la Stack du module react-navigation, la méthode
-      // navigate peut accepter des paramètres , deuxième argument voir ci dessous :
+    // Abscence est la clé définie dans la Stack du module react-navigation, la méthode
+    // navigate peut accepter des paramètres , deuxième argument voir ci dessous :
     <TouchableOpacity onPress={() => navigation.navigate("Abscence", { id })}>
       <ContainerStudent attendance={attendance} >
         <View style={{ width: 110 }}>
@@ -30,6 +30,7 @@ const Student = ({ navigation, id, name, attendance, lessons, notes }) => {
           <Text style={{ padding: 2, marginBottom: 2 }}>
             Moyenne : {notes ? average(notes) : 'aucune note'}
           </Text>
+         
         </View>
       </ContainerStudent>
     </TouchableOpacity>

@@ -2,9 +2,11 @@ import {
   GET_STUDENT,
   INCREMENT_ATTENDANCE,
   DECREMENT_ATTENDANCE,
+  TOGGLE_ORDER_NOTES,
+  RESET
 } from "../constants/actions";
 
-import { deepCopyStudents } from '../actions/actions-types';
+import { deepCopyStudents, average } from '../actions/actions-types';
 
 const stateInit = {
   students: [
@@ -37,15 +39,16 @@ const stateInit = {
     { id: 2, title: "React Native" },
     { id: 3, title: "MongoDB" },
   ],
-  behaviours: [],
+  behaviours: new Map(),
   order: false,
   student: null,
+  mentions: ['A', 'B', 'C', 'D']
 };
 
 const reducer = (state = stateInit, action) => {
   let newStudents = null, newStudent = null;
   switch (action.type) {
-   
+
     case GET_STUDENT:
       const student = state.students.find((s) => action.payload === s.id);
 
@@ -55,40 +58,65 @@ const reducer = (state = stateInit, action) => {
       };
 
     case INCREMENT_ATTENDANCE:
+    case DECREMENT_ATTENDANCE:
       // copie profonde de l'objet students dans le state
       newStudents = deepCopyStudents(state);
-      newStudents.map(student => {
-          if(student.id === action.payload){
-              student.attendance++;
-              newStudent = student;
-          }
 
-          return student;
-      })
+      for(const student of newStudents){
+        // les objets student (même ref) ne sont pas des copies donc si vous les modifiez
+        // ils le seront également dans newStudents 
+        if (student.id === action.payload) {
+          if( action.type === INCREMENT_ATTENDANCE ) student.attendance++;
+          if( action.type === DECREMENT_ATTENDANCE && student.attendance >= 0 ) student.attendance--;
+          newStudent = student;
+
+          break; // refacto optimisation
+        };
+      }
 
       return {
         ...state,
         students: newStudents,
-        student : newStudent
+        student: newStudent
       };
 
-      case DECREMENT_ATTENDANCE:
-        newStudents = deepCopyStudents(state);
-        newStudents.map(student => {
-          if(student.id === action.payload && student.attendance > 0){
-              student.attendance--;
-          }
+    case RESET:
+      newStudents = deepCopyStudents(state);
+      newStudents.map(student => {
+        student.attendance = 0;
 
-          if(student.id === action.payload) newStudent = student;
-
-          return student;
+        return student;
       })
 
-        return {
-          ...state,
-          students: newStudents,
-          student : newStudent
-        }
+      return {
+        ...state,
+        students: newStudents // forcera la mise à jour du state car nouvel objet
+      }
+
+    case TOGGLE_ORDER_NOTES:
+      newStudents = deepCopyStudents(state);
+      const sens = state.order === true ? 1 : - 1;
+
+      // array.sort((a, b) => a - b)
+      // newStudents.sort((a, b) => (average(a.notes) - average(b.notes) >= 0 ? (1 * sens) : (-1 * sens) ) );
+      newStudents.sort((a, b) => sens * (average(a.notes) - average(b.notes)  ) );
+
+      // [a, b, c, d]
+      // premiere boucle a
+      //  deuxième boucle sur [b,c,d]
+      //    if (a > b) 
+      //      permute a et b
+
+      // premiere boucle b
+      //  deuxième boucle sur [c,d]
+      //    if (b > c) 
+      //      permute a et b
+      
+      return {
+        ...state,
+        students: newStudents,
+        order: !state.order
+      }
 
     default:
       return state;
