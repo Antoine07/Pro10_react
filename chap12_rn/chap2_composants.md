@@ -527,7 +527,9 @@ Puis, une fois les votes terminées on affichera les résultats.
 
 Le bouton Reset Favorites permettra de réinitialiser les votes. Si on clique dessus dans ce cas ré-afficher la première vue fig 1 ci-dessus.
 
-Pour cette dernière partie faites une nouvelle branche history.
+### Partie facultative 
+
+Si vous avez le temps. Pour cette dernière partie faites une nouvelle branche history.
 
 3. Ajoutez un reducer history. Celui-ci mémorisera l'historique des différents votes effectués dans l'application maximun 10 essais. Vous afficherez, en utilisant l'historique, dans le composant Favorite le pourcentage des votes par candidats. Voyez l'exemple qui suit :
 
@@ -741,15 +743,25 @@ const deepCopyStudents = state => state.students.map(s => ({ ...s, notes : [ ...
 ![page 4](images/nav_04.png)
 \newpage
 
-5. Implémentez un bouton sur la page Students permettant de remettre à jour le nombre d'abscence de tous les étudiants.
+5. Implémentez un bouton sur la page listant les étudiants, il permettra de remettre à jour le nombre d'abscence(s) des étudiants.
 
-6. Ajoutez un bouton sur la page des étudiants permettant d'ordonner (toggle) la liste des étudiants par ordre croissant ou décroissant des moyennes.
+6. Ajoutez un bouton sur la page des étudiants permettant d'ordonner la liste des étudiants par ordre croissant ou décroissant des moyennes. Implémentez un bouton de type toggle pour changer l'ordre.
 
-7. Lorsqu'on clique sur un étudiant on donnera en plus de la gestion de ses abscences la possibilité du lui attribuer une appréciation au niveau de son comportement :
+7. Lorsqu'on clique sur un étudiant on donnera en plus de la gestion de ses abscences la possibilité du lui attribuer une appréciation au niveau de son comportement, vous utiliserez les critères d'attribution de comportement ci-après. Vous intégrerez cette mention dans le bloc d'information par étudiant.
 
 ```js
 behaviours : [{ id : 1, mention : 'A'}, { id : 2, mention : 'B'}]
 ```
+
+Critères :
+
+- 0 abscence : mention A
+
+- de 1 à 2 abscences : mention B
+
+- de 3 à 5 abscences : mention C
+
+- plus de 5 abscences : mention D
 
 ## Deuxième partie
 
