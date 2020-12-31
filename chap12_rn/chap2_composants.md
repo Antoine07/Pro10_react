@@ -645,6 +645,26 @@ const App = () => ( <Nav /> );
 export default App;
 ```
 
+Vous pouvez organiser les dossiers et les fichiers de l'application comme suit :
+
+```txt
+assets/
+src/
+  components/
+    Student.js
+  screens/
+    AbscenceScreen.js
+    HomeScreen.js
+    StudentsScreen.js
+  reducers/
+    school.js
+    index.js
+  Styles/
+    Elems.js <-- Styled-components
+
+App.js
+```
+
 3. Création des menus de l'application et mise en place des données. Voyez ci-dessous les données à utiliser pour l'exercice. 
 
 Utilisez Redux ou Context API de React pour gérer le store dans l'application.
@@ -721,35 +741,6 @@ const deepCopyStudents = state => state.students.map(s => ({ ...s, notes : [ ...
 ![page 4](images/nav_04.png)
 \newpage
 
-Refactorisez votre application comme suit. Créez tout d'abord une branche refactoring :
-
-```bash
-git checkout -b refactoring
-```
-
-Puis organiser l'application comme suit :
-
-```txt
-assets/
-src/
-  screens/
-    AbscenceScreen.js
-    HomeScreen.js
-    StudentsScreen.js
-  store/
-    SchoolProvider.js
-  styles.js
-
-App.js
-```
-
-Une fois votre code refactoré créer un commit :
-
-```bash
-git add .
-git commit -m "refactoring ok"
-```
-
 5. Implémentez un bouton sur la page Students permettant de remettre à jour le nombre d'abscence de tous les étudiants.
 
 6. Ajoutez un bouton sur la page des étudiants permettant d'ordonner (toggle) la liste des étudiants par ordre croissant ou décroissant des moyennes.
@@ -762,6 +753,18 @@ behaviours : [{ id : 1, mention : 'A'}, { id : 2, mention : 'B'}]
 
 ## Deuxième partie
 
+Créez une branche firebase pour avoir l'historique de la première partie de votre travail.
+
+```bash
+git checkout -b firebase
+```
+
+Une fois la branche créée, créez un commit pour rendre effectif cette nouvelle branche :
+
+```bash
+git add .
+git commit -m "firebase ok"
+```
 
 ### Firebase
 
@@ -781,12 +784,12 @@ Dans cette solution vous devez être connecté pour accéder à l'écriture sur 
 {
     "rules": {
         ".read": true,
- 				".write": "auth != null"
+ 	    ".write": "auth != null"
     }
 }
 ```
 
-Dans l'onglet "Authentication" choisissez dans l'option "Sign-in method" l'option "Adresse e-mail/Mot de passe" pour s'authentifier. Créez un utilisateur email/password (onglet Users).
+Dans l'onglet "Authentication" choisissez dans l'option "Sign-in method" l'option "Adresse e-mail/Mot de passe" pour s'authentifier. Créez un utilisateur email/password (onglet Users). Si vous avez le temps vous implémenterez une authentification pour la gestion des abscences.
 
 Vous devez également installer le module suivant dans votre projet :
 
@@ -813,28 +816,6 @@ firebase.initializeApp(firebaseConfig);
 
 export default firebase;
 
-```
-
-Dans le fichier actions-types.js si vous travaillez avec Redux vous devez importer les dépendances suivantes afin de vous connecter à la base de données dans Firebase :
-
-```js
-import firebaseConfig from '../config';
-import * as firebase from "firebase/app";
-import 'firebase/auth';
-
-const database = firebase.database();
-
-```
-
-Vous pouvez intégrer au projet un système de login/password afin de pouvoir vous connecter à Firebase, voyez le code suivant pour vous aidez à réalise cette fonctionnalité :
-
-```js
-firebase.auth().signInWithEmailAndPassword(EMAIL, PASSWORD)
-  .then(res => {
-      dispatch(connect(true));
-  }).catch(err => {
-      dispatch(set_error('Error connect'));
-  });
 ```
 
 Vous utiliserez la documentation suivante afin d'effectuer l'ensemble de vos requêtes avec votre base de données Realtine de Firebase :
@@ -897,7 +878,29 @@ Vous utiliserez la documentation suivante afin d'effectuer l'ensemble de vos req
 }
 ```
 
-### Exercice Algorithmique & Calculatrice
+Dans le fichier actions-types.js si vous travaillez avec Redux vous devez importer les dépendances suivantes afin de vous connecter à la base de données dans Firebase :
+
+```js
+import firebaseConfig from '../config';
+import * as firebase from "firebase/app";
+import 'firebase/auth';
+
+const database = firebase.database();
+
+```
+
+Vous pouvez intégrer au projet un système de login/password afin de pouvoir vous connecter à Firebase, voyez le code suivant pour vous aidez à réalise cette fonctionnalité :
+
+```js
+firebase.auth().signInWithEmailAndPassword(EMAIL, PASSWORD)
+  .then(res => {
+      dispatch(connect(true));
+  }).catch(err => {
+      dispatch(set_error('Error connect'));
+  });
+```
+
+### Exercice Algorithmique & Calculatrice (Facultatif)
 
 Installez react native navigation et organisez l'application comme suit :
 
